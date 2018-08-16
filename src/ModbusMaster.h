@@ -91,6 +91,7 @@ public:
 	void begin();
 	void begin(uint16_t);
 	void idle(void (*)());
+	void setSlave(uint8_t);
 	
 	// Modbus exception codes
 	/**
@@ -276,6 +277,6 @@ private:
 	uint8_t ModbusMasterTransaction(uint8_t u8MBFunction);
 	
 	// idle callback function; gets called during idle time between TX and RX
-	void (*_idle)();
+	void (*_idle)() = nullptr;
 };
 #endif

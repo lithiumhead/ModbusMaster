@@ -212,6 +212,13 @@ void ModbusMaster::beginTransmission(uint16_t u16Address) {
 	u16TransmitBufferLength = 0;
 }
 
+/**
+Change the target slaveID
+*/
+void ModbusMaster::setSlave(uint8_t u8MBSlave){
+	_u8MBSlave = u8MBSlave;
+}
+
 // eliminate this function in favor of using existing MB request functions
 uint8_t ModbusMaster::requestFrom(uint16_t address, uint16_t quantity) {
 	uint8_t read;
@@ -753,9 +760,10 @@ uint8_t ModbusMaster::ModbusMasterTransaction(uint8_t u8MBFunction) {
 	u8ModbusADU[u8ModbusADUSize++] = highByte(u16CRC);
 	u8ModbusADU[u8ModbusADUSize] = 0;
 	
-	if (MBSerial.available()) { //Empty the receive buffer before beginning.
-		MBSerial.read();
-	}
+	// if (MBSerial.available()) { //Empty the receive buffer before beginning.
+	// 	MBSerial.read();
+	// }
+	while(MBSerial.read() > -1);
 			
 	// transmit request
 	if (MBUseEnablePin == 1) {  //Switch RS485 driver to transmitting mode.
